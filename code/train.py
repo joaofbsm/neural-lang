@@ -1,19 +1,13 @@
 #!/usr/bin/env python3
 
-"""Training of Word2Vec Neural Language Models for Word Prediction"""
+"""Training of Word2Vec Neural Language Models for Word Analogy"""
 
 __author__ = 'João Francisco Barreto da Silva Martins'
 __email__ = 'joaofbsm@dcc.ufmg.br'
 __license__ = 'MIT'
 
 import sys
-import logging
 import nlp
-import gensim
-
-
-logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s',
-                    level=logging.INFO)
 
 
 def main(args):
@@ -31,27 +25,8 @@ def main(args):
     nlp.split_corpus_file(corpus_path, corpus_filename, corpus_proportions)
 
     # Train models with a varied set of parameters
-    for corpus_proportion in corpus_proportions:
-        sentences = gensim.models.word2vec.LineSentence(
-                '{}{}{}'.format(corpus_path, corpus_proportion, corpus_filename)
-        )
-
-        for context_size in context_sizes:
-            for algorithm_name, sg in training_algorithms.items():
-                model = gensim.models.Word2Vec(
-                        sentences=sentences,
-                        window=context_size,
-                        min_count=1,
-                        workers=4,
-                        sg=sg
-                )
-
-                model.save('{}{}-{}-{}.model'.format(
-                        models_path,
-                        corpus_proportion,
-                        context_size,
-                        algorithm_name)
-                )
+    nlp.train_models(corpus_filename, corpus_path, models_path,
+                     corpus_proportions, context_sizes, training_algorithms)
 
 
 if __name__ == '__main__':
