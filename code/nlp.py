@@ -7,8 +7,6 @@ __email__ = 'joaofbsm@dcc.ufmg.br'
 __license__ = 'MIT'
 
 import logging
-import cython
-import gensim
 
 logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s',
                     level=logging.INFO)
@@ -39,22 +37,39 @@ def split_corpus_file(path_to_file='', filename='corpus.txt',
             f.write(' '.join(corpus[:splitting_point]))
 
 
-def clean_validation_file(path_to_file='', filename='validation.txt',
-                          prefix_filter=':'):
+def prepare_validation_file(path_to_file='', filename='validation.txt',
+                            prefix_filter=None, lowercase=True):
     """
-    Removes topic header lines.
+    Prepare the validation file. All actions are optional.
 
     :param path_to_file: path to the validation file.
     :param filename: validation file name.
     :param prefix_filter: prefix substring to filter line out of file.
+    :param lowercase: flag to convert all words in file to lowercase.
     :return: None
     """
 
-    with open('{}{}'.format(path_to_file, filename), 'r') as old_file, \
-         open('{}clean_{}'.format(path_to_file, filename), 'w+') as new_file:
+    # Removes topic's headers
+    if prefix_filter is not None:
+        with open('{}{}'.format(path_to_file, filename), 'r') as old_file, \
+             open('{}prep_{}'.format(path_to_file, filename), 'w+') as new_file:
 
-        for line in old_file:
-            if not line.startswith(prefix_filter):
+            for line in old_file:
+                if not line.startswith(prefix_filter):
+
+                    # Convert all words to lowercase
+                    if lowercase:
+                        line = line.lower()
+
+                    new_file.write(line)
+
+    # Convert all words to lowercase in case there is no line filter
+    elif lowercase:
+        with open('{}{}'.format(path_to_file, filename), 'r') as old_file, \
+             open('{}prep_{}'.format(path_to_file, filename), 'w+') as new_file:
+
+            for line in old_file:
+                line = line.lower()
                 new_file.write(line)
 
 

@@ -8,7 +8,7 @@ __license__ = 'MIT'
 
 import sys
 import logging
-import code.nlp as nlp
+import nlp
 import gensim
 
 
@@ -38,9 +38,10 @@ def main(args):
 
         for context_size in context_sizes:
             for algorithm_name, sg in training_algorithms.items():
-                model = gensim.models.word2vec.Word2Vec(
+                model = gensim.models.Word2Vec(
                         sentences=sentences,
                         window=context_size,
+                        min_count=1,
                         workers=4,
                         sg=sg
                 )
