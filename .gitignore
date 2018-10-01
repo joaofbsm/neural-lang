@@ -107,4 +107,15 @@ venv.bak/
 word2vec/
 
 # Corpus found in mattmahoney.net/dc/text8.zip​
-data/corpus.txt
+# Validation file used was question-words from Google Word2Vec implementation:
+#  - https://code.google.com/archive/p/word2vec/source/default/source
+data/
+
+# Language models generated
+models/
+
+# Results from experiments
+results/
+
+# PyCharm project config files
+.idea/
