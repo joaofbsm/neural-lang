@@ -1,0 +1,6 @@
+- Receive number of workers as train.py parameter
+- Use argparse for arguments
+- Create inexistent directories (models, results, etc...) with os to prevent error
+- Standardize code, mainly in respect to hangings indentations 
+- Fill empty function docstrings
+- Create repository README
